@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Access\RoleController;
 use App\Http\Controllers\Dashboard\AdminController;
 use App\Http\Controllers\Dashboard\EditorController;
 use App\Http\Controllers\HomeController;
@@ -32,5 +33,12 @@ Route::middleware([
     });
     Route::middleware(['role:editor'])->prefix('editor')->name('editor.')->group(function(){
         Route::get('/dashboard', [EditorController::class, 'dashboard'])->name('dashboard');
+    });
+
+    // siteman
+    Route::prefix('siteman')->name('siteman.')->group(function(){
+        Route::prefix('access')->name('access.')->name('access.')->group(function(){
+            Route::resource('roles', RoleController::class);
+        });
     });
 });
