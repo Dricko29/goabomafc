@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\Dashboard\AdminController;
+use App\Http\Controllers\Dashboard\EditorController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\RedirectController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,7 +24,13 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified'
 ])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [RedirectController::class, 'redirect'])->name('dashboard');
+
+    // backend
+    Route::middleware(['role:administrator'])->prefix('administrator')->name('administrator.')->group(function(){
+        Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+    });
+    Route::middleware(['role:editor'])->prefix('editor')->name('editor.')->group(function(){
+        Route::get('/dashboard', [EditorController::class, 'dashboard'])->name('dashboard');
+    });
 });

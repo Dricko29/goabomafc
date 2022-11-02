@@ -12,7 +12,11 @@
                                 @if (Route::has('login'))
                                     @auth
                                     {{-- <a href="{{ url('/dashboard') }}" class="bigslam-top-bar-social-icon" title="dashboard"><i class="fa-solid fa-house-lock"></i> Dashboard</a> --}}
-                                    <a href="{{ url('/dashboard') }}" class="bigslam-top-bar-social-icon" title="dashboard"><i class="fa-solid fa-user"></i> {{ Auth::user()->name }}</a>
+                                        @role('user')
+                                            <a href="{{ route('profile.show') }}" class="bigslam-top-bar-social-icon" title="dashboard"><i class="fa-solid fa-user"></i> {{ Auth::user()->name }}</a>
+                                        @else
+                                            <a href="{{ url('/dashboard') }}" class="bigslam-top-bar-social-icon" title="dashboard"><i class="fa-sharp fa-solid fa-house"></i> Dashboard</a>
+                                        @endrole
                                     @else
                                         <a href="{{ route('login') }}" class="bigslam-top-bar-social-icon" title="login"><i class="fa-solid fa-right-to-bracket"></i> Login</a>
                                         @if (Route::has('register'))
