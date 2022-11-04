@@ -1,0 +1,1 @@
+<input id="bulkId" class="form-check-input fs-15" type="checkbox" name="user_bulk" value="{{ $model->id }}">

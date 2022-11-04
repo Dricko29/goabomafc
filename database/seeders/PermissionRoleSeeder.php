@@ -51,16 +51,9 @@ class PermissionRoleSeeder extends Seeder
         ]);
         $user->assignRole($role2);
 
-        $user = \App\Models\User::factory()->create([
-            'name' => 'Dirly Frex',
-            'email' => 'user@example.com',
-        ]);
-        $user->assignRole($role3);
+        $user = \App\Models\User::factory(1000)->create()->each(function($value){
+            $value->assignRole('user');
+        });
         
-        $user = \App\Models\User::factory()->create([
-            'name' => 'Trex Swindown',
-            'email' => 'user1@example.com',
-        ]);
-        $user->assignRole($role3);
     }
 }

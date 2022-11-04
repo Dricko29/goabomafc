@@ -7,19 +7,19 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link menu-link" href="#sidebarAccess" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAccess">
+                            <a class="nav-link menu-link {{ request()->is('siteman/access*') ? 'collapses active' : '' }}" href="#sidebarAccess" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAccess">
                                 <i class="ri-key-2-line"></i> <span data-key="t-access">Access</span>
                             </a>
-                            <div class="collapse menu-dropdown" id="sidebarAccess">
+                            <div class="collapse menu-dropdown {{ request()->is('siteman/access*') ? 'show' : '' }}" id="sidebarAccess">
                                 <ul class="nav nav-sm flex-column">
                                     <li class="nav-item">
-                                        <a href="{{ route('siteman.access.roles.index') }}" class="nav-link" data-key="t-roles"> Roles </a>
+                                        <a href="{{ route('siteman.access.roles.index') }}" class="nav-link {{ request()->is('siteman/access/roles*') ? 'active' : '' }}" data-key="t-roles"> Roles </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="apps-chat.html" class="nav-link" data-key="t-permissions"> Permissions </a>
+                                        <a href="{{ route('siteman.access.permissions.index') }}" class="nav-link {{ request()->is('siteman/access/permissions*') ? 'active' : '' }}" data-key="t-permisions"> Permissions </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="apps-chat.html" class="nav-link" data-key="t-users"> Users </a>
+                                        <a href="{{ route('siteman.access.users.index') }}" class="nav-link {{ request()->is('siteman/access/users*') ? 'active' : '' }}" data-key="t-users"> Users </a>
                                     </li>
                                 </ul>
                             </div>

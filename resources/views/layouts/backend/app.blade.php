@@ -128,6 +128,7 @@ data-layout-style="default">
         @include('layouts.backend.partials.theme')
     </div>
 
+    <script type="text/javascript" src="{{ asset('backend/assets/code.jquery.com/jquery-3.6.0.min.js') }}"></script>
     <!-- JAVASCRIPT -->
     <script src="{{ asset('') }}backend/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('') }}backend/assets/libs/simplebar/simplebar.min.js"></script>
@@ -138,7 +139,7 @@ data-layout-style="default">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script type="text/javascript" src="{{ asset('') }}backend/assets/libs/choices.js/choices.min.js"></script>
     <script type="text/javascript" src="{{ asset('') }}backend/assets/libs/flatpickr/flatpickr.min.js"></script>
-
+    @include('sweetalert::alert')
     @stack('js')
 
     <!-- App js -->

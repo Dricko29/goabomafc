@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\Access\PermissionController;
 use App\Http\Controllers\Access\RoleController;
+use App\Http\Controllers\Access\UserController;
 use App\Http\Controllers\Dashboard\AdminController;
 use App\Http\Controllers\Dashboard\EditorController;
 use App\Http\Controllers\HomeController;
@@ -38,7 +40,21 @@ Route::middleware([
     // siteman
     Route::prefix('siteman')->name('siteman.')->group(function(){
         Route::prefix('access')->name('access.')->name('access.')->group(function(){
+            Route::get('roles/{role}/users', [RoleController::class, 'assignUserRole'])->name('roles.users.role');
+            Route::post('roles/{role}/users/{user}', [RoleController::class, 'assignUser'])->name('roles.assign.users');
+            Route::delete('roles/{role}/users/{user}', [RoleController::class, 'removeUserRole'])->name('roles.remove.user');
+            Route::post('roles/{role}/permissions', [RoleController::class, 'syncPermissions'])->name('roles.sync.permissions');
+            Route::post('roles/bulk-delete', [RoleController::class, 'bulkDelete'])->name('roles.bulk-delete');
             Route::resource('roles', RoleController::class);
+            
+            Route::post('permissions/bulk-delete', [PermissionController::class, 'bulkDelete'])->name('permissions.bulk-delete');
+            Route::resource('permissions', PermissionController::class);
+
+            Route::put('users/{user}/reset', [UserController::class, 'resetPassword'])->name('users.reset');
+            Route::post('users/{user}/permissions', [UserController::class, 'syncPermissions'])->name('users.sync.permissions');
+            Route::post('users/{user}/roles', [UserController::class, 'syncRoles'])->name('users.sync.roles');
+            Route::post('users/bulk-delete', [UserController::class, 'bulkDelete'])->name('users.bulk-delete');
+            Route::resource('users', UserController::class);
         });
     });
 });
