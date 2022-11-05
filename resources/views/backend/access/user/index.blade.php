@@ -51,6 +51,31 @@
                         </div>
                     </div>
                     <div class="card-body">
+                        <div class="row g-3 align-items-center mb-4">
+                            <div class="col-sm-4">
+                                <div>
+                                    <select class="form-control" data-plugin="choices" data-choices data-choices-search-false name="role_id" id="role">
+                                        <option value="" disabled>Role</option>
+                                        <option value="0" selected>Semua</option>
+                                        @foreach ($roles as $role)
+                                        <option value="{{ $role->id }}">{{ $role->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            {{-- <div class="col-sm-4">
+                                <div class="">
+                                    <input type="date" class="form-control" id="datepicker" data-provider="flatpickr" data-date-format="Y-m-d" data-date="true" placeholder="Select date" name="tgl">
+                                </div>
+                            </div> --}}
+
+                            {{-- <div class="col-sm-4">
+                                <div>
+                                    <button type="button" class="btn btn-primary w-100" onclick="SearchData();"> <i class="ri-equalizer-fill me-2 align-bottom"></i>Filters</button>
+                                </div>
+                            </div>
+                            <!--end col--> --}}
+                        </div>
                         {!! $dataTable->table() !!}
                     </div>
                 </div>
@@ -79,6 +104,15 @@
 {!! $dataTable->scripts() !!}
 
 <script>
+    $(document).ready(function(){
+        var table = $('#user-table');
+        $('#role').on('change', function(){
+            table.on('preXhr.dt', function ( e, settings, data ) {
+                data.role_id = $('#role').val();
+            })
+            table.DataTable().ajax.reload()
+        })
+    })
     // konfirmasi reset password
     $(document).on('click', 'button.confirm-reset', function () {
         Swal.fire({
@@ -147,7 +181,6 @@
     });
 
     $(document).on('change','input[name="user_bulk"]', function(){
-        console.log($('input[name="user_bulk"]').length);
         if ($('input[name="user_bulk"]').length == $('input[name="user_bulk"]:checked').length) {
             $('input[name="check_all"]').prop('checked', true);
         } else {

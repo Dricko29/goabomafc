@@ -26,6 +26,12 @@ class RoleDataTable extends DataTable
             ->addIndexColumn()
             ->addColumn('check', 'backend.access.role.bulk', false)
             ->addColumn('action', 'backend.access.role.action')
+            ->editColumn('created_at', function($row){
+                return $row->created_at;
+            })
+            ->editColumn('updated_at', function($row){
+                return $row->updated_at;
+            })
             ->rawColumns(['check', 'action']);
     }
 

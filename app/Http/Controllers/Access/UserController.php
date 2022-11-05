@@ -25,7 +25,8 @@ class UserController extends Controller
      */
     public function index(UserDataTable $dataTable)
     {
-        return $dataTable->render('backend.access.user.index');
+        $roles = Role::all();
+        return $dataTable->render('backend.access.user.index',compact('roles'));
     }
 
     /**

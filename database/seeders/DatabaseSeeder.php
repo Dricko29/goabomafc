@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         $this->call(PermissionRoleSeeder::class);
+        $this->call(ClubSeeder::class);
         
     }
 }

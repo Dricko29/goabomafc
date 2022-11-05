@@ -69,7 +69,7 @@ return [
     |
     */
 
-    'timezone' => env('APP_TIMEZONE','UTC'),
+    'timezone' => 'Asia/Jakarta',
 
     /*
     |--------------------------------------------------------------------------
@@ -108,7 +108,7 @@ return [
     |
     */
 
-    'faker_locale' => env('FAKER_LOCALE','en_US'),
+    'faker_locale' => env('FAKER_LOCALE', 'en_US'),
 
     /*
     |--------------------------------------------------------------------------

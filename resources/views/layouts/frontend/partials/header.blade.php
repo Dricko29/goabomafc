@@ -6,14 +6,7 @@
                                 <div class="bigslam-navigation bigslam-item-pdlr clearfix ">
                                     <div class="bigslam-main-menu" id="bigslam-main-menu">
                                         <ul id="menu-main-navigation-1" class="sf-menu">
-                                            <li class="bigslam-center-nav-menu-item">
-                                                <div class="bigslam-logo  bigslam-item-pdlr">
-                                                    <div class="bigslam-logo-inner">
-                                                        <a href="/"><img src="{{ asset('') }}frontend/upload/logo.png" alt="" width="200" height="191" title="logo"></a>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li class="menu-item menu-item-home current-menu-item bigslam-normal-menu"><a href="/">Home</a></li>
+                                            {{-- <li class="menu-item menu-item-home current-menu-item bigslam-normal-menu"><a href="/">Home</a></li> --}}
                                             <li class="menu-item menu-item-has-children bigslam-normal-menu"><a href="schedule.html" class="sf-with-ul-pre">Schedule</a>
                                                 <ul class="sub-menu">
                                                     <li class="menu-item" data-size="60"><a href="schedule.html">Schedule – Default Style</a></li>
@@ -31,6 +24,13 @@
                                                 </ul>
                                             </li>
                                             <li class="menu-item bigslam-normal-menu"><a href="liverpool.html">Our Team</a></li>
+                                            <li class="bigslam-center-nav-menu-item">
+                                                <div class="bigslam-logo  bigslam-item-pdlr">
+                                                    <div class="bigslam-logo-inner">
+                                                        <a href="/"><img src="{{ $club->logo }}" alt="" width="200" height="191" title="home"></a>
+                                                    </div>
+                                                </div>
+                                            </li>
                                             <li class="menu-item menu-item-has-children bigslam-normal-menu"><a href="#" class="sf-with-ul-pre">SportsPress</a>
                                                 <ul class="sub-menu">
                                                     <li class="menu-item menu-item-has-children" data-size="60"><a href="#" class="sf-with-ul-pre">Game</a>

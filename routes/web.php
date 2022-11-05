@@ -3,6 +3,7 @@
 use App\Http\Controllers\Access\PermissionController;
 use App\Http\Controllers\Access\RoleController;
 use App\Http\Controllers\Access\UserController;
+use App\Http\Controllers\ClubController;
 use App\Http\Controllers\Dashboard\AdminController;
 use App\Http\Controllers\Dashboard\EditorController;
 use App\Http\Controllers\HomeController;
@@ -56,5 +57,9 @@ Route::middleware([
             Route::post('users/bulk-delete', [UserController::class, 'bulkDelete'])->name('users.bulk-delete');
             Route::resource('users', UserController::class);
         });
+
+        Route::post('clubs/background/{id}', [ClubController::class, 'updateBackground'])->name('club.update.background');
+        Route::post('clubs/logo/{id}', [ClubController::class, 'updateLogo'])->name('club.update.logo');
+        Route::resource('clubs', ClubController::class)->only(['index','edit', 'update']);
     });
 });

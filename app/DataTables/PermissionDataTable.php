@@ -26,6 +26,12 @@ class PermissionDataTable extends DataTable
             ->addIndexColumn()
             ->addColumn('check', 'backend.access.permission.bulk', false)
             ->addColumn('action', 'backend.access.permission.action')
+            ->editColumn('created_at', function ($row) {
+                return $row->created_at;
+            })
+            ->editColumn('updated_at', function ($row) {
+                return $row->updated_at;
+            })
             ->rawColumns(['check', 'action'])
             ->setRowId('id');
     }

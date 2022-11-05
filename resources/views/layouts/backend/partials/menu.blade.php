@@ -26,6 +26,12 @@
                         </li>
 
                         <li class="nav-item">
+                            <a class="nav-link menu-link {{ request()->routeIs('siteman.clubs*') ? 'active' : '' }}" href="{{ route('siteman.clubs.index') }}">
+                                <i class="ri-home-line"></i> <span data-key="t-club"> Club </span>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
                             <a class="nav-link menu-link" href="#sidebarApps" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarApps">
                                 <i class="ri-apps-2-line"></i> <span data-key="t-apps">Apps</span>
                             </a>

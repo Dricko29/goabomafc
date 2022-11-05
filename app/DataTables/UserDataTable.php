@@ -33,6 +33,12 @@ class UserDataTable extends DataTable
                     return '<span class="badge bg-primary">'.$role->name.'</span>';
                 })->implode(' ');
             })
+            ->editColumn('created_at', function ($row) {
+                return $row->created_at;
+            })
+            ->editColumn('updated_at', function ($row) {
+                return $row->updated_at;
+            })
             ->rawColumns(['check', 'action', 'roles'])
             ->setRowId('id');
     }
@@ -45,7 +51,14 @@ class UserDataTable extends DataTable
      */
     public function query(User $model): QueryBuilder
     {
-        return $model->newQuery()->with('roles')->whereNot('id',auth()->user()->id)->latest();
+        $role = $this->request()->get('role_id');
+        if ($role == 0) {
+             return $model->newQuery()->with('roles')->whereNot('id', auth()->user()->id)->latest();
+        } else {
+            return $model->newQuery()->with('roles')->whereHas('roles', function ($query) use ($role) {
+               return $query->where('id', $role);
+            })->whereNot('id', auth()->user()->id)->latest();
+        }
     }
 
     /**
@@ -98,8 +111,8 @@ class UserDataTable extends DataTable
                 ->searchable(false),
             Column::make('name')->title('Nama User'),
             Column::make('email')->title('Email'),
-            Column::make('roles', 'roles.name', 'roles.name')->orderable(false),
-            Column::make('created_at')->title('Tanggal Dibuat'),
+            Column::make('roles', 'roles.name', 'roles.name')->orderable(false)->searchable(false),
+            Column::make('created_at')->title('Tanggal Terdaftar'),
             Column::make('updated_at')->title('Terakhir Diubah'),
             Column::computed('action', 'Aksi')
                 ->titleAttr('aksi')
