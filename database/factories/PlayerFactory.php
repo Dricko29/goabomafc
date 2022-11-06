@@ -17,7 +17,10 @@ class PlayerFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'nama' => $this->faker->name('male'),
+            'no_pg' => $this->faker->unique()->numberBetween(1,100),
+            'tgl_lahir' => $this->faker->dateTimeBetween('-25 years', '-20 years'),
+            'no_tlp' => $this->faker->phoneNumber(), 
         ];
     }
 }

@@ -30,6 +30,11 @@
                                 <i class="ri-home-line"></i> <span data-key="t-club"> Club </span>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link {{ request()->routeIs('siteman.players*') ? 'active' : '' }}" href="{{ route('siteman.players.index') }}">
+                                <i class="ri-run-line"></i> <span data-key="t-players"> Players </span>
+                            </a>
+                        </li>
 
                         <li class="nav-item">
                             <a class="nav-link menu-link" href="#sidebarApps" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarApps">

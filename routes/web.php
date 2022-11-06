@@ -7,6 +7,7 @@ use App\Http\Controllers\ClubController;
 use App\Http\Controllers\Dashboard\AdminController;
 use App\Http\Controllers\Dashboard\EditorController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PlayerController;
 use App\Http\Controllers\RedirectController;
 use Illuminate\Support\Facades\Route;
 
@@ -61,5 +62,8 @@ Route::middleware([
         Route::post('clubs/background/{id}', [ClubController::class, 'updateBackground'])->name('club.update.background');
         Route::post('clubs/logo/{id}', [ClubController::class, 'updateLogo'])->name('club.update.logo');
         Route::resource('clubs', ClubController::class)->only(['index','edit', 'update']);
+        
+        Route::post('players/bulk-delete', [PlayerController::class, 'bulkDelete'])->name('players.bulk-delete');
+        Route::resource('players',PlayerController::class);
     });
 });
