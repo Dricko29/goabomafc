@@ -19,7 +19,7 @@ class PlayerFactory extends Factory
         return [
             'nama' => $this->faker->name('male'),
             'no_pg' => $this->faker->unique()->numberBetween(1,100),
-            'tgl_lahir' => $this->faker->dateTimeBetween('-25 years', '-20 years'),
+            'tgl_lahir' => $this->faker->dateTimeBetween('-25 years', '-20 years')->format('d-m-Y'),
             'no_tlp' => $this->faker->phoneNumber(), 
         ];
     }

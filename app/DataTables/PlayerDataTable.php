@@ -69,6 +69,7 @@ class PlayerDataTable extends DataTable
             ->addTableClass('table nowrap dt-responsive align-middle table-hover table-bordered')
             ->setTableAttributes(['style' => 'width:100%'])
             ->columns($this->getColumns())
+            ->responsive(true)
             ->minifiedAjax()
             ->dom("<'row'<'col-sm-12 col-md-4'l><'col-sm-12 col-md-4 text-center'B><'col-sm-12 col-md-4'f>>"
                 . "<'row'<'col-sm-12'tr>>"
@@ -106,7 +107,7 @@ class PlayerDataTable extends DataTable
                 ->title('#')
                 ->orderable(false)
                 ->searchable(false),
-            Column::make('nama')->title('Nama Player'),
+            Column::make('nama')->title('Nama Player')->responsivePriority(1),
             Column::make('no_pg')->title('No Punggung'),
             Column::make('position', 'position.nama', 'position.nama')->orderable(false)->searchable(false),
             Column::make('created_at')->title('Tanggal Terdaftar'),

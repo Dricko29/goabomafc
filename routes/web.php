@@ -62,7 +62,10 @@ Route::middleware([
         Route::post('clubs/background/{id}', [ClubController::class, 'updateBackground'])->name('club.update.background');
         Route::post('clubs/logo/{id}', [ClubController::class, 'updateLogo'])->name('club.update.logo');
         Route::resource('clubs', ClubController::class)->only(['index','edit', 'update']);
-        
+
+        Route::delete('players{player}/foto', [PlayerController::class, 'deletePlayerFoto'])->name('player.delete.foto');
+        Route::post('players/upload', [PlayerController::class, 'uploadFoto']);
+        Route::delete('players/delete', [PlayerController::class, 'deleteFoto']);
         Route::post('players/bulk-delete', [PlayerController::class, 'bulkDelete'])->name('players.bulk-delete');
         Route::resource('players',PlayerController::class);
     });

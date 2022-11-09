@@ -6,8 +6,11 @@ use App\Models\Player;
 use App\Models\Position;
 use Illuminate\Http\Request;
 use App\DataTables\PlayerDataTable;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\Player\StorePlayerRequest;
 use App\Http\Requests\Player\UpdatePlayerRequest;
+use App\Http\Traits\PlayerTrait;
+use App\Services\PlayerService;
 
 class PlayerController extends Controller
 {
@@ -39,9 +42,10 @@ class PlayerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StorePlayerRequest $request)
+    public function store(StorePlayerRequest $request, PlayerService $service)
     {
-        Player::create($request->validated());
+        $foto = $service->createFotoPlayer($request);
+        Player::create($request->validated()+['foto_path' => $foto]);
         return redirect()->route('siteman.players.index')->with('toast_success', 'Player berhasil ditambahkan!');
     }
 
@@ -53,7 +57,7 @@ class PlayerController extends Controller
      */
     public function show(Player $player)
     {
-        //
+        return view('backend.player.show',compact('player'));
     }
 
     /**
@@ -75,10 +79,11 @@ class PlayerController extends Controller
      * @param  \App\Models\Player  $player
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdatePlayerRequest $request, Player $player)
+    public function update(UpdatePlayerRequest $request, Player $player, PlayerService $service)
     {
-        $player->update($request->validated());
-        return redirect()->route('siteman.players.index')->with('toast_success', 'Player berhasil diubah!');
+        $foto = $service->updateFoto($request, $player);
+        $player->update($request->validated() + ['foto_path' => $foto]);
+        return redirect()->back()->with('toast_success', 'Player berhasil diubah!');
     }
 
     /**
@@ -89,15 +94,30 @@ class PlayerController extends Controller
      */
     public function destroy(Player $player)
     {
+        Storage::delete($player->foto_path);
         $player->delete();
         return redirect()->route('siteman.players.index')->with('toast_success', 'Player berhasil dihapus!');
     }
 
-    public function bulkDelete(Request $request)
+    public function bulkDelete(Request $request, PlayerService $service)
     {
-        $bulkRole = $request->id;
-        $user = Player::whereIn('id', $bulkRole);
-        $user->delete();
-        return response()->json(['code' => 1, 'msg' => 'Player berhasil dihapus!']);
+        return $service->bulkPlayerDelete($request);   
+    }
+
+    public function deletePlayerFoto(Player $player)
+    {
+        Storage::delete($player->foto_path);
+        $player->forceFill(['foto_path' => null])->save();
+        return response()->json(['status' => 1, 'msg' => 'Foto berhasil dihapus']);
+    }
+
+    public function uploadFoto(Request $request, PlayerService $service)
+    {
+        return $service->uploadFotoPlayer($request);
+    }
+
+    public function deleteFoto(PlayerService $service)
+    {
+        return $service->deleteFotoPlayer();
     }
 }

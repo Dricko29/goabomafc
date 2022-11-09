@@ -20,7 +20,20 @@ class Player extends Model
         'no_tlp',
         'foto_path',
     ];
+ 
+    public function getUmurAttribute()
+    {
+        return Carbon::parse($this->tgl_lahir)->age;
+    }
 
+    public function tglLahir(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => Carbon::parse($value)->format('d-m-Y'),
+            set: fn($value) => Carbon::createFromFormat('d-m-Y', $value)->format('Y-m-d')
+        );
+    }
+    
     public function createdAt(): Attribute
     {
         return Attribute::make(

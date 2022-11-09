@@ -1,11 +1,11 @@
 @extends('layouts.backend.app')
 
-@section('title', 'Detail - User')
+@section('title', 'Detail - Player')
 
 @push('css')
-    <!-- Sweet Alert css-->
-    <link href="{{ asset('') }}backend/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('') }}backend/assets/cdn.jsdelivr.net/npm/select2%404.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <!-- Filepond css -->
+    <link rel="stylesheet" href="{{ asset('') }}backend/assets/libs/filepond/filepond.min.css" type="text/css" />
+    <link rel="stylesheet" href="{{ asset('') }}backend/assets/libs/filepond-plugin-image-preview/filepond-plugin-image-preview.min.css">
 @endpush
 
 @section('content')
@@ -14,12 +14,12 @@
         <div class="row">
             <div class="col-12">
                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                    <h4 class="mb-sm-0">User</h4>
+                    <h4 class="mb-sm-0">Player</h4>
 
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
                             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                            <li class="breadcrumb-item"><a href="{{ route('siteman.access.users.index') }}">User</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('siteman.players.index') }}">Players</a></li>
                             <li class="breadcrumb-item active">Detail</li>
                         </ol>
                     </div>
@@ -29,158 +29,129 @@
         </div>
         <!-- end page title -->
         <div class="row">
-            <div class="col-xxl-3">
-                <div class="card mb-3">
-                    <div class="card-header align-items-center d-flex bg-primary">
-                        <h4 class="card-title mb-0 flex-grow-1 text-light">Detail User</h4>
-                        <div class="flex-shrink-0">
-                            <div class="form-check form-switch form-switch-right form-switch-md">
-                                <a href="{{ route('siteman.access.users.index') }}" class="btn btn-sm btn-light"><i class="ri-arrow-left-line align-bottom me-1"></i>Kembali</a>
-                            </div>
-                        </div>
-                    </div><!-- end card header -->
-                    <div class="card-body">
-                        <div class="flex-shrink-0 avatar-md mx-auto">
-                            <div class="avatar-title bg-light rounded">
-                                <img src="{{ asset($user->profile_photo_url) }}" alt="" height="50" />
-                            </div>
-                        </div>
-                        <div class="my-4 text-center">
-                            <h5 class="mb-1">{{ $user->name }}</h5>
-                            {{-- <p class="text-muted">Since 1987</p> --}}
-                        </div>
-                        <div class="table-card">
-                            <table class="table mb-0">
-                                <tbody>
-                                    <tr>
-                                        <td class="fw-medium">Nama User</td>
-                                        <td>:</td>
-                                        <td>{{ $user->name }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="fw-medium">Email</td>
-                                        <td>:</td>
-                                        <td>{{ $user->email }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="fw-medium">Tanggal Terdaftar</td>
-                                        <td>:</td>
-                                        <td>{{ $user->created_at }}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <!--end table-->
-                        </div>
-                    </div>
-                </div>
-                <!--end card-->
-                <div class="card mb-3">
-                    <div class="card-body">
-                        <div class="d-flex mb-3">
-                            <h6 class="card-title mb-0 flex-grow-1">Role</h6>
-                        </div>
-                        <form action="{{ route('siteman.access.users.sync.roles', $user->id) }}" method="POST">      
-                            @csrf                
-                            <div class="mb-3">
-                                <label for="role" class="form-label">Role</label>
-                                <select class="js-example-basic-multiple @error('role')
-                                    is-invalid
-                                @enderror" name="role[]" multiple="multiple">
-                                    @foreach ($roles as $role) 
-                                        <option value="{{ $role->name }}" {{ in_array($role->name, $userRoles->toArray()) ? 'selected' : '' }}>{{ $role->name }}</option>
-                                    @endforeach
-                                </select>
-                                @error('role')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
+            <div class="card">
+                <div class="card-header border-bottom-dashed">
+                    <div class="row g-4 align-items-center">
+                        <div class="col-sm">
                             <div>
-                                <button type="submit" class="btn btn-primary">Simpan</button>
+                                <h5 class="card-title mb-0">Detail Player</h5>
                             </div>
-                        </form>
-                    </div>
-                </div>
-                <!--end card-->
-            </div>
-            <!---end col-->
-            <div class="col-xxl-9">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="text-muted">
-                            <h6 class="mb-3 fw-semibold text-uppercase">Permissions</h6>
-                            
-                            <form id="formGivePermission" action="{{ route('siteman.access.users.sync.permissions', $user->id) }}" method="POST">
-                                @csrf
-                                <div class="row">
-                                @forelse ($permissions as $item)    
-                                    <div class="col-lg-3 col-md-6">    
-                                        <div id="form-check" class="form-check form-check-danger mb-3">
-                                            <input id="permission" class="form-check-input" type="checkbox" name="permissions[]" value="{{ $item->name }}" id="formCheck{{ $item->id }}" {{ in_array($item->name, $userPermissions->toArray()) ? 'checked' : '' }}>
-                                            
-                                            <label class="form-check-label" for="formCheck{{ $item->id }}">
-                                                {{ $item->name }}
-                                            </label>
-                                        </div>    
-                                    </div>
-                                    <!--end col-->
-                                @empty
-                                <div>
-                                    Tidak Ada Permissions
-                                </div>
-                                @endforelse
-                                </div>
-                                <div>
-                                    <button type="submit" class="btn btn-danger">Simpan</button>
-                                </div>
-                            </form>
+                        </div>
+                        <div class="col-sm-auto">
+                            <div>
+                                <a href="{{ route('siteman.players.index') }}" class="btn btn-success"><i class="ri-arrow-left-line align-bottom me-1"></i>Kembali</a>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <!--end card-->
+                <div class="card-body text-center">
+                    <div class="position-relative d-inline-block">
+                        @if ($player->foto_path)
+                        <img src="{{ asset($player->foto_path) }}" alt="" class="avatar-xl rounded-circle img-thumbnail">
+                        <span class="contact-active position-absolute rounded-circle bg-success"><span class="visually-hidden"></span>
+                        @else
+                        <img src="{{ asset('backend/assets/images/club/player/default.jpg') }}" alt="" class="avatar-xl rounded-circle img-thumbnail">
+                        <span class="contact-active position-absolute rounded-circle bg-success"><span class="visually-hidden"></span>
+                        @endif
+                    </div>
+                    <h5 class="mt-4 mb-1">{{ $player->nama }}</h5>
+                    <p class="text-muted">{{ $player->position->nama }}</p>
+
+                    <ul class="list-inline mb-0">
+                        <li class="list-inline-item avatar-xs">
+                            <a href="javascript:void(0);" class="avatar-title bg-soft-success text-success fs-15 rounded">
+                                <i class="ri-phone-line"></i>
+                            </a>
+                        </li>
+                        <li class="list-inline-item avatar-xs">
+                            <a href="javascript:void(0);" class="avatar-title bg-soft-danger text-danger fs-15 rounded">
+                                <i class="ri-mail-line"></i>
+                            </a>
+                        </li>
+                        <li class="list-inline-item avatar-xs">
+                            <a href="javascript:void(0);" class="avatar-title bg-soft-warning text-warning fs-15 rounded">
+                                <i class="ri-question-answer-line"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body">
+                    <h6 class="text-muted text-uppercase fw-semibold mb-3">Personal Information</h6>
+                    
+                    <div class="table-responsive table-card">
+                        <table class="table table-borderless mb-0">
+                            <tbody>
+                                <tr>
+                                    <td class="fw-medium" scope="row">Nama Player</td>
+                                    <td>: {{ $player->nama }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-medium" scope="row">Position</td>
+                                    <td>: {{ $player->position->nama }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-medium" scope="row">Nomor Punggung</td>
+                                    <td>: <span class="badge bg-primary">{{ $player->no_pg }}</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-medium" scope="row">Tgl Lahir</td>
+                                    <td>: {{ $player->tgl_lahir }} ({{ $player->umur }} Tahun)</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-medium" scope="row">Nomor Tlp</td>
+                                    <td>: {{ $player->no_tlp }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
-            <!--end col-->
+            <!--end card-->
         </div>
-        <!--end row-->
 
     </div>
 @endsection
 
 @push('js')
+    <!-- filepond js -->
+    <script src="{{ asset('') }}backend/assets/libs/filepond/filepond.min.js"></script>
+    <script src="{{ asset('') }}backend/assets/libs/filepond-plugin-image-preview/filepond-plugin-image-preview.min.js"></script>
+    <script src="{{ asset('') }}backend/assets/libs/filepond-plugin-file-validate-size/filepond-plugin-file-validate-size.min.js"></script>
+    <script src="{{ asset('') }}backend/assets/libs/filepond-plugin-image-exif-orientation/filepond-plugin-image-exif-orientation.min.js"></script>
+    <script src="{{ asset('') }}backend/assets/libs/filepond-plugin-file-encode/filepond-plugin-file-encode.min.js"></script>
+
     
-    <!-- Sweet Alerts js -->
-    <script src="{{ asset('') }}backend/assets/libs/sweetalert2/sweetalert2.min.js"></script>
-    <!--select2 cdn-->
-    <script src="{{ asset('') }}backend/assets/cdn.jsdelivr.net/npm/select2%404.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
         $(document).ready(function () {
-            $(".js-example-basic-multiple").select2();
+            $(".form-select").select2();
         })
-        // konfirmasi penghapusan
-        $(document).on('click', 'button.confirm-delete-user-role', function () {
-            Swal.fire({
-                title: 'Apakah anda yakin?',
-                text: "Anda akan menghapus data ini!",
-                icon: 'warning',
-                showCancelButton: !0,
-                confirmButtonText: 'Ya, Hapus!',
-                cancelButtonText: 'Tidak, Batal!',
-                confirmButtonClass: 'btn btn-primary w-xs me-2 mt-2',
-                cancelButtonClass: 'btn btn-danger w-xs mt-2',
-                buttonsStyling: !1,
-                showCloseButton: !0,
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $(this).parent('form').trigger('submit')
-                } else{
-                    Swal.fire({
-                        title: 'Dibatalkan',
-                        text: 'File anda aman :)',
-                        icon: 'error',
-                        confirmButtonClass: 'btn btn-primary mt-2',
-                        buttonsStyling: !1,
-                    });
+        FilePond.registerPlugin(
+            FilePondPluginFileEncode,
+            FilePondPluginFileValidateSize,
+            FilePondPluginImageExifOrientation,
+            FilePondPluginImagePreview
+        );
+        FilePond.create(document.querySelector(".filepond-input-circle"), {
+            labelIdle:
+                'Drag & Drop your picture or <span class="filepond--label-action">Browse</span>',
+            imagePreviewHeight: 170,
+            imageCropAspectRatio: "1:1",
+            imageResizeTargetWidth: 200,
+            imageResizeTargetHeight: 200,
+            stylePanelLayout: "compact circle",
+            styleLoadIndicatorPosition: "center bottom",
+            styleProgressIndicatorPosition: "right bottom",
+            styleButtonRemoveItemPosition: "left bottom",
+            styleButtonProcessItemPosition: "right bottom",
+        });
+        FilePond.setOptions({
+            server: {
+                process: '/siteman/players/upload',
+                revert: '/siteman/players/delete',
+                headers:{
+                    'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
                 }
-            });
+            },
         });
     </script>
 @endpush

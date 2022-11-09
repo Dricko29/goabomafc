@@ -45,7 +45,6 @@
                                 </label>
                             </div>
                         </div>
-                        
                         <span class="text-danger text-sm logo_error"></span>
                     </div>
                 </div>

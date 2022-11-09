@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\Role\StoreRoleRequest;
 use App\Http\Requests\Role\UpdateRoleRequest;
+use App\Services\RoleService;
 
 class RoleController extends Controller
 {
@@ -107,10 +108,9 @@ class RoleController extends Controller
         }
     }
 
-    public function bulkDelete(Request $request)
+    public function bulkDelete(Request $request, RoleService $service)
     {
-        $bulkRole = $request->id;
-        $role = Role::whereIn('id', $bulkRole);
+        $role = $service->bulkDeleteRole($request->id);
         $role->delete();
         return response()->json(['code' => 1, 'msg' => 'Role berhasil dihapus!']);
         

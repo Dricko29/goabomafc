@@ -13,14 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('players', function (Blueprint $table) {
+        Schema::create('temporary_files', function (Blueprint $table) {
             $table->id();
-            $table->string('nama');
-            $table->foreignId('position_id')->constrained('positions');
-            $table->string('no_pg')->unique();
-            $table->string('no_tlp')->nullable();
-            $table->date('tgl_lahir')->nullable();
-            $table->string('foto_path')->nullable();
+            $table->string('folder');
+            $table->string('file');
             $table->timestamps();
         });
     }
@@ -32,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('players');
+        Schema::dropIfExists('temporary_files');
     }
 };
